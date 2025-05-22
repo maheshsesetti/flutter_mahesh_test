@@ -6,15 +6,27 @@ import '../useCase/details_use_case.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final FetchDetailsUseCase fetchDetailsUseCase;
+
+  dynamic finalData;
   DetailsBloc(this.fetchDetailsUseCase) : super(DetailsInitialState()) {
-    on<LoadDetailsEvent>((event, emit) async {
-      emit(DetailsLoadingState());
-      try {
-        final data = await fetchDetailsUseCase();
-        emit(DetailsLoadedState(data));
-      } catch (e) {
-        emit(ErrorState("Failed to Load Screen"));
+    on<LoadDetailsEvent>((event, emit) =>onload(emit));
+    on<SwitchTabEvent>((event, emit) =>onSwitchTab(event,emit));
+  }
+
+  Future<void> onload(Emitter<DetailsState> emit) async {
+     emit(DetailsLoadingState());
+    try {
+      final data = await fetchDetailsUseCase();
+      finalData = data;
+      emit(DetailsLoadedState(data));
+    } catch (e) {
+      emit(ErrorState("Failed to Load Screen"));
+    }
+  }
+
+    Future<void> onSwitchTab(SwitchTabEvent event, Emitter<DetailsState> emit) async {
+      if(finalData != null) {
+    emit(DetailsLoadedState(finalData,isDetailsSelected: event.isDetailsSelected));
       }
-    });
   }
 }
