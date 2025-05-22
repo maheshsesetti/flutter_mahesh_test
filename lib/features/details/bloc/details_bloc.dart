@@ -16,17 +16,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   Future<void> onload(Emitter<DetailsState> emit) async {
      emit(DetailsLoadingState());
     try {
-      final data = await fetchDetailsUseCase();
-      finalData = data;
-      emit(DetailsLoadedState(data));
+      // final data = await fetchDetailsUseCase(); //this is for use case
+      // finalData = data;
+      emit(DetailsLoadedState());
     } catch (e) {
       emit(ErrorState("Failed to Load Screen"));
     }
   }
 
     Future<void> onSwitchTab(SwitchTabEvent event, Emitter<DetailsState> emit) async {
-      if(finalData != null) {
-    emit(DetailsLoadedState(finalData,isDetailsSelected: event.isDetailsSelected));
-      }
+       
+    emit(DetailsLoadedState(isDetailsSelected: event.isDetailsSelected));
+      
   }
 }
