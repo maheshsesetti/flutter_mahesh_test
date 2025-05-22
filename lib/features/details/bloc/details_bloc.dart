@@ -7,7 +7,7 @@ import '../useCase/details_use_case.dart';
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final FetchDetailsUseCase fetchDetailsUseCase;
 
-  dynamic finalData;
+
   DetailsBloc(this.fetchDetailsUseCase) : super(DetailsInitialState()) {
     on<LoadDetailsEvent>((event, emit) =>onload(emit));
     on<SwitchTabEvent>((event, emit) =>onSwitchTab(event,emit));
@@ -16,9 +16,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   Future<void> onload(Emitter<DetailsState> emit) async {
      emit(DetailsLoadingState());
     try {
-      // final data = await fetchDetailsUseCase(); //this is for use case
-      // finalData = data;
-      emit(DetailsLoadedState());
+      final data = await fetchDetailsUseCase(); //this is for use case
+
+      emit(DetailsLoadedState(data: data));
     } catch (e) {
       emit(ErrorState("Failed to Load Screen"));
     }

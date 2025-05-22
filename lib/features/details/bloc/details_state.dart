@@ -5,10 +5,10 @@ class DetailsInitialState extends DetailsState{}
 class DetailsLoadingState extends DetailsState {}
 
 class DetailsLoadedState extends DetailsState{
-  // final String data;
+  final String? data;
   final bool isDetailsSelected;
 
-  DetailsLoadedState({this.isDetailsSelected = true});
+  DetailsLoadedState({this.isDetailsSelected = true,this.data});
 }
 
 class ErrorState extends DetailsState {
